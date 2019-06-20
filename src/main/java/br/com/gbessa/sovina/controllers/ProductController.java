@@ -7,12 +7,16 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.gbessa.sovina.dtos.PriceDto;
@@ -28,9 +32,17 @@ public class ProductController {
 	@Autowired
 	ProductRepository productRepository;
 	
-	@GetMapping
-	public List<ProductDto> list(){
+	@GetMapping("/all")
+	public List<ProductDto> listAll(){
 		return ProductDto.toDto(productRepository.findAll());
+	}
+	
+	@GetMapping
+	public Page<ProductDto> listPageable(@RequestParam int page, @RequestParam int size){
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Product> products = productRepository.findAll(pageable);
+		return ProductDto.toDto(products);
 	}
 	
 	@GetMapping("/{id}")
