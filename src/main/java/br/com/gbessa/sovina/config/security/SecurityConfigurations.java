@@ -48,6 +48,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/products").permitAll()
 		.antMatchers(HttpMethod.GET, "/products/*").permitAll()
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
+		.antMatchers(HttpMethod.GET, "/actuator").permitAll()
+		.antMatchers(HttpMethod.GET, "/actuator/*").permitAll()
 		.anyRequest().authenticated()
 		.and().csrf().disable() // Podemos desabilitar pois esse tipo de ataque não vai acontecer já que usaremos JWT e não Session
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
