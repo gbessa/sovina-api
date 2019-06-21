@@ -14,7 +14,10 @@ import javax.persistence.ManyToMany;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.Getter;
+
 @Entity
+@Getter
 public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
 	
@@ -32,10 +35,6 @@ public class User implements UserDetails {
 		return this.roles;
 	}
 
-	public String getEmail() {
-		return this.email;
-	}
-	
 	@Override
 	public String getPassword() {
 		return this.password;
