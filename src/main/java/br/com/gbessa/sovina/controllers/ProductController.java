@@ -1,5 +1,6 @@
 package br.com.gbessa.sovina.controllers;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,21 +9,24 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.gbessa.sovina.dtos.PriceDto;
 import br.com.gbessa.sovina.dtos.ProductDto;
 import br.com.gbessa.sovina.dtos.ProductFormDto;
+import br.com.gbessa.sovina.dtos.StoreDto;
+import br.com.gbessa.sovina.dtos.StoreFormDto;
 import br.com.gbessa.sovina.models.Product;
+import br.com.gbessa.sovina.models.Store;
 import br.com.gbessa.sovina.repositories.ProductRepository;
 
 @RestController
@@ -38,9 +42,7 @@ public class ProductController {
 	}
 	
 	@GetMapping
-	public Page<ProductDto> listPageable(@RequestParam int page, @RequestParam int size){
-		
-		Pageable pageable = PageRequest.of(page, size);
+	public Page<ProductDto> listPageable(Pageable pageable){
 		Page<Product> products = productRepository.findAll(pageable);
 		return ProductDto.toDto(products);
 	}
@@ -49,6 +51,16 @@ public class ProductController {
 	public ResponseEntity<ProductDto> detail(@PathVariable Long id){
 		Optional<Product> product = productRepository.findById(id);
 		return product.isPresent() ? ResponseEntity.ok(ProductDto.toDto(product.get())) : ResponseEntity.notFound().build();
+	}
+	
+	@PostMapping
+	@Transactional
+	public ResponseEntity<ProductDto> insert(@RequestBody @Valid ProductFormDto productForm, UriComponentsBuilder uriBuilder) {
+		Product product = ProductFormDto.fromDto(productForm);
+		productRepository.save(product);
+		
+		URI uri = uriBuilder.path("/products/{id}").buildAndExpand(product.getId()).toUri();
+		return ResponseEntity.created(uri).body(new ProductDto(product));
 	}
 	
 	@PutMapping("/{id}")
@@ -60,6 +72,13 @@ public class ProductController {
 		product.setScannedCode(productForm.getScannedCode());
 		
 		return ResponseEntity.ok(ProductDto.toDto(product));
+	}
+	
+	@DeleteMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		productRepository.deleteById(id);
+		return ResponseEntity.ok().build();
 	}
 	
 }

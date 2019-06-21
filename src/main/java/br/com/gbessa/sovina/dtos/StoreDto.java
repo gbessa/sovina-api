@@ -4,6 +4,9 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+
+import br.com.gbessa.sovina.models.Product;
 import br.com.gbessa.sovina.models.Store;
 import lombok.Getter;
 
@@ -28,6 +31,10 @@ public class StoreDto {
 
 	public static StoreDto toDto(Store store) {
 		return new StoreDto(store);
+	}
+
+	public static Page<StoreDto> toDto(Page<Store> stores) {
+		return stores.map(StoreDto::new);
 	}
 	
 }
