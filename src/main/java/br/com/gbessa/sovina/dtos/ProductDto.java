@@ -15,12 +15,14 @@ public class ProductDto {
 	private String name;
 	private String brand;
 	private String scannedCode;
+	private Boolean favorited;
 
 	public ProductDto(Product product) {
 		this.id = product.getId();
 		this.name = product.getName();
 		this.brand = product.getBrand();
 		this.scannedCode = product.getScannedCode();
+		this.favorited = product.getFavorited();
 	}
 	
 	public static List<ProductDto> toDto(List<Product> products) {
@@ -35,5 +37,4 @@ public class ProductDto {
 		return new ProductDto(product);
 	}
 
-	
 }

@@ -19,5 +19,6 @@ import lombok.NoArgsConstructor;
 	private String name;
 	private String brand;
 	private String scannedCode;
+	private Boolean favorited;
 
 }

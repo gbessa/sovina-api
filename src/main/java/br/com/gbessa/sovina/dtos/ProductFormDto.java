@@ -11,9 +11,10 @@ import lombok.Data;
 	private String name;
 	private String brand;
 	private String scannedCode;
+	private Boolean favorited;
 	
 	public static Product fromDto(@Valid ProductFormDto productForm) {
-		return new Product(null, productForm.getName(), productForm.getBrand(), productForm.getScannedCode());
+		return new Product(null, productForm.getName(), productForm.getBrand(), productForm.getScannedCode(), productForm.getFavorited());
 	}
 	
 }
