@@ -23,10 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.gbessa.sovina.dtos.ProductDto;
 import br.com.gbessa.sovina.dtos.ProductFormDto;
-import br.com.gbessa.sovina.dtos.StoreDto;
-import br.com.gbessa.sovina.dtos.StoreFormDto;
 import br.com.gbessa.sovina.models.Product;
-import br.com.gbessa.sovina.models.Store;
 import br.com.gbessa.sovina.repositories.ProductRepository;
 
 @RestController

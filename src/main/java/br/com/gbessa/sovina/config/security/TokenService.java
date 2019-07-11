@@ -22,12 +22,23 @@ public class TokenService {
 	
 	public String generateToken(Authentication authentication) {
 		User userLogged = (User) authentication.getPrincipal();
+		return generateToken(userLogged);
 		
+//		Optional<T> principal = (Optional<T>) authentication.getPrincipal();
+//		if (principal instanceof Optional<User>){
+//		    Optional<User> userLogged = (Optional<User>) principal;		
+//		    return generateToken(userLogged.get());
+//		} else {
+//			throw new UsernameNotFoundException(null);
+//		}
+	}
+	
+	public String generateToken(User user) {
 		Date today = new Date();
 		
 		return Jwts.builder()
 				.setIssuer("Sovina API")
-				.setSubject(userLogged.getId().toString())
+				.setSubject(user.getId().toString())
 				.setIssuedAt(today)
 				.setExpiration(new Date(today.getTime() + Long.parseLong(expiration)))
 				.signWith(SignatureAlgorithm.HS256, secretKey)
